@@ -19,7 +19,7 @@ services:
       - postgres
     environment:
       CONFIG: config.TestingConfig
-      DB: postgresql+psycopg2://labconnect:${POSTGRES_PASSWORD}@postgres/labconnect
+      DB: postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres/labconnect
       JWT_SECRET_KEY: ${BACKEND_JWT_SECRET_KEY}
       SECRET_KEY: ${BACKEND_SECRET_KEY}
       FRONTEND_URL: https://labconnect.cs.rpi.edu
