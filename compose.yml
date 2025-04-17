@@ -1,0 +1,40 @@
+services:
+  postgres:
+    image: postgres:17-alpine3.21
+    container_name: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER} # The PostgreSQL user (useful to connect to the database)
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD} # The PostgreSQL password (useful to connect to the database)
+      POSTGRES_DB: labconnect # The PostgreSQL default database (automatically created at first launch)
+    volumes:
+      - /data/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    restart: unless-stopped
+
+  backend:
+    image: ghcr.io/labconnect-rcos/labconnect-backend:main
+    container_name: backend
+    depends_on:
+      - postgres
+    environment:
+      CONFIG: config.TestingConfig
+      DB: postgresql+psycopg2://labconnect:${POSTGRES_PASSWORD}@postgres/labconnect
+      JWT_SECRET_KEY: ${BACKEND_JWT_SECRET_KEY}
+      SECRET_KEY: ${BACKEND_SECRET_KEY}
+      FRONTEND_URL: https://labconnect.cs.rpi.edu
+    volumes:
+      - /data/backend-config:/app/config/
+    ports:
+      - 9000:9000
+    restart: unless-stopped
+
+  frontend:
+    image: ghcr.io/labconnect-rcos/labconnect-frontend:main
+    container_name: frontend
+    depends_on:
+      - backend
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+
