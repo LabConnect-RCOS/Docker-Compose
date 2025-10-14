@@ -1,0 +1,15 @@
+sudo apt update
+sudo apt install postgresql postgresql-contrib valkey
+sudo systemctl start postgresql
+valkey-server
+
+Create .env file in frontend directory that has 
+    VITE_BACKEND_SERVER=http://localhost:9000
+
+Open 2 terminals
+
+In one, Navigate to frontend repo and run (check frontend_setup if necessary): 
+    npm run dev
+
+In the other, Navigate to backend repo and run (check backend_setup if necessary): 
+    make develop
