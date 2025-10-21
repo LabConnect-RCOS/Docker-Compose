@@ -1,4 +1,10 @@
 sudo apt update
+sudo apt install gnupg2 lsb-release -y
+wget https://repo.percona.com/apt/percona-release_latest.generic_all.deb
+sudo apt install ./percona-release_latest.generic_all.deb
+sudo percona-release enable valkey experimental
+sudo apt update
+sudo apt install valkey -y
 sudo apt install postgresql postgresql-contrib valkey
 sudo systemctl start postgresql
 valkey-server
